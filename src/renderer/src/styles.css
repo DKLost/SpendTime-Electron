@@ -642,11 +642,8 @@ button:disabled {
 
 /* 统计：紧凑的汇总条 + 双列条形，范围可调 */
 .stats-panel {
-  /* 高度不足时统计先收缩并内部滚动，把余量留给记录区，避免记录被压到零高 */
-  flex: 0 1 auto;
-  min-height: 96px;
-  max-height: 40%;
-  overflow-y: auto;
+  /* 统计按内容自然铺开，右栏整体滚动时不被压缩或裁切 */
+  flex: 0 0 auto;
 }
 
 .stats-range {
@@ -671,6 +668,7 @@ button:disabled {
   align-items: flex-start;
   gap: var(--space-4) var(--space-5);
   flex-wrap: wrap;
+  flex: 0 0 auto;
 }
 
 .clock-now,
@@ -779,8 +777,6 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: var(--space-2xs);
-  max-height: 110px;
-  overflow: auto;
 }
 
 .stats-bar-row {
@@ -943,22 +939,17 @@ html[data-slot-tint='on'] .time-table tbody tr[data-slot='late-night'] td.time-c
   width: var(--duration-column-width);
 }
 
-/* 记录表在自己的区域内滚动，时钟与统计保持固定，左栏不被整页滚动带走 */
+/* 记录区全部展开，滚动统一交给右栏，避免出现内外双层滚动条 */
 .records-panel {
-  /* 无论怎么放大，记录区都保留一屏可用的最小高度，滚动发生在内部 */
-  min-height: 180px;
+  flex: 0 0 auto;
 }
 
 .records-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding-right: var(--space-2);
   padding-bottom: var(--space-2);
   container-type: inline-size;
 }
 
-/* 末尾空档已由滚动区底部留白承接，避免多出一截滚动高度 */
+/* 末尾空档的下边距由 records-scroll 的底部留白承接 */
 .records-scroll .records-gaps {
   margin-bottom: 0;
 }

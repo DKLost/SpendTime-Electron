@@ -1,6 +1,6 @@
 {
   "name": "spendtime-electron",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "description": "SpendTime 桌面版：计时、周计划与提醒、待办、行动、时间记录与统计",
   "author": "SpendTime",
