@@ -231,7 +231,7 @@ export function App() {
       ringtoneEvents.cancelStartSuppression()
       return
     }
-    alarmsState.dismiss(alarm.planId)
+    alarmsState.dismiss(alarm)
   }
 
   function handleThemeChange(event: ChangeEvent<HTMLSelectElement>): void {

@@ -7,7 +7,7 @@ type AlarmBannerProps = {
   readonly alarms: readonly AlarmFireDto[]
   readonly highlightedPlanId: number | null
   onStart(alarm: AlarmFireDto): void
-  onDismiss(planId: number): void
+  onDismiss(alarm: AlarmFireDto): void
   onDismissAll(): void
 }
 
@@ -37,13 +37,13 @@ export function AlarmBanner(props: AlarmBannerProps) {
     }
 
     function handleDismissClick(): void {
-      props.onDismiss(alarm.planId)
+      props.onDismiss(alarm)
     }
 
     const highlighted = props.highlightedPlanId === alarm.planId
     return (
       <li
-        key={`${alarm.planId}:${alarm.fireDate}`}
+        key={`${alarm.planId}:${alarm.fireDate}:${alarm.startMin}`}
         className={highlighted ? 'alarm-item is-highlighted' : 'alarm-item'}
         data-plan-id={alarm.planId}
       >

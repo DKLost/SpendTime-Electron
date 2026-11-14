@@ -13,14 +13,22 @@ export type AlarmRuntimeDeps = {
 export type AlarmRuntime = {
   start(): void
   check(): void
+  // 计划增删改后立刻补查，新时段不必等下一个分钟边界
+  nudge(): void
   dispose(): void
 }
 
-// 计划精确到分钟，30 秒轮询足够及时；错过的场景由 core 的宽限窗口补发
-const CHECK_INTERVAL_MS = 30_000
+const MINUTE_MS = 60_000
+
+// 计划精确到分钟，检查钉在分钟边界上；相比固定 30 秒轮询，误差从 0-30 秒降到毫秒级
+export function delayToNextMinute(nowMs: number): number {
+  const remainder = ((nowMs % MINUTE_MS) + MINUTE_MS) % MINUTE_MS
+  return remainder === 0 ? MINUTE_MS : MINUTE_MS - remainder
+}
 
 export function createAlarmRuntime(deps: AlarmRuntimeDeps): AlarmRuntime {
-  let timer: ReturnType<typeof setInterval> | null = null
+  let timer: ReturnType<typeof setTimeout> | null = null
+  let started = false
 
   function check(): void {
     try {
@@ -42,21 +50,43 @@ export function createAlarmRuntime(deps: AlarmRuntimeDeps): AlarmRuntime {
     }
   }
 
-  function start(): void {
+  function schedule(): void {
     if (timer !== null) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(runScheduledCheck, delayToNextMinute(deps.clock.now()))
+  }
+
+  function runScheduledCheck(): void {
+    timer = null
+    check()
+    schedule()
+  }
+
+  function start(): void {
+    if (started) {
+      return
+    }
+    started = true
+    check()
+    schedule()
+  }
+
+  function nudge(): void {
+    if (!started) {
       return
     }
     check()
-    timer = setInterval(check, CHECK_INTERVAL_MS)
+    schedule()
   }
 
   function dispose(): void {
-    if (timer === null) {
-      return
+    started = false
+    if (timer !== null) {
+      clearTimeout(timer)
     }
-    clearInterval(timer)
     timer = null
   }
 
-  return { start, check, dispose }
+  return { start, check, nudge, dispose }
 }

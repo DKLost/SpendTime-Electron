@@ -24,9 +24,10 @@ export type AlarmFire = {
   readonly targetSec: number
 }
 
-// 去重键：同一计划在同一天最多提醒一次
-export function alarmKey(planId: number, fireDate: LocalDate): string {
-  return `${planId}:${fireDate}`
+// 去重键按「计划 + 日期 + 开始时刻」：同一时段最多提醒一次，
+// 但改过时段后属于新的提醒时刻，当天仍应重新触发
+export function alarmKey(planId: number, fireDate: LocalDate, startMin: number): string {
+  return `${planId}:${fireDate}:${startMin}`
 }
 
 // 纯判定：周几、时间窗口、去重全部由入参决定，不读系统时钟
@@ -43,7 +44,7 @@ export function collectDueAlarms(
     .filter((plan) => plan.alarmEnabled)
     .filter((plan) => plan.weekday === weekday)
     .filter((plan) => nowMinute >= plan.startMin && nowMinute - plan.startMin <= grace)
-    .filter((plan) => !firedKeys.has(alarmKey(plan.id, fireDate)))
+    .filter((plan) => !firedKeys.has(alarmKey(plan.id, fireDate, plan.startMin)))
     .sort((left, right) => left.startMin - right.startMin || left.id - right.id)
     .map((plan) => ({
       planId: plan.id,

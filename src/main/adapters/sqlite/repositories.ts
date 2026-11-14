@@ -76,6 +76,7 @@ type TodoRow = {
 type AlarmEventRow = {
   readonly plan_id: number
   readonly fire_date: string
+  readonly start_min: number
 }
 
 function toAction(row: ActionRow): Action {
@@ -567,14 +568,14 @@ export function createTodoRepo(db: Db): TodoRepo {
 }
 
 export function createAlarmEventRepo(db: Db): AlarmEventRepo {
-  const selectKeys = db.prepare('SELECT plan_id, fire_date FROM alarm_events WHERE fire_date = ?')
+  const selectKeys = db.prepare('SELECT plan_id, fire_date, start_min FROM alarm_events WHERE fire_date = ?')
   const insert = db.prepare(
     'INSERT OR IGNORE INTO alarm_events (plan_id, fire_date, start_min, fired_at) VALUES (?, ?, ?, ?)',
   )
 
   function listKeysByDate(date: LocalDate): readonly string[] {
     const rows = selectKeys.all(date) as AlarmEventRow[]
-    return rows.map((row) => alarmKey(row.plan_id, row.fire_date))
+    return rows.map((row) => alarmKey(row.plan_id, row.fire_date, row.start_min))
   }
 
   function record(fire: AlarmFire, firedAt: EpochMs): void {

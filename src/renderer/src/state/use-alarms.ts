@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import type { AlarmFireDto, EventPayload } from '@shared/contracts'
-import { subscribeEvent } from '../api'
+import { invokeCommand, subscribeEvent } from '../api'
 
 export type AlarmState = {
   readonly alarms: readonly AlarmFireDto[]
-  dismiss(planId: number): void
+  // 按「计划 + 日期 + 开始时刻」关闭，改过时段的旧卡片不会连带清掉新提醒
+  dismiss(alarm: AlarmFireDto): void
   dismissAll(): void
 }
 
@@ -43,9 +44,28 @@ export function useAlarms(options: AlarmOptions = {}): AlarmState {
     return subscribeEvent('alarm.fire', handleFired)
   }, [])
 
-  function dismiss(planId: number): void {
+  // 主进程启动时的那次检查早于页面订阅，补拉缓存里的提醒，避免卡片与铃声一起丢失
+  useEffect(function pullPendingAlarms() {
+    let cancelled = false
+    void invokeCommand('alarms.pending', {}).then((response) => {
+      if (cancelled || !response.ok) {
+        return
+      }
+      const first = response.value.fires[0]
+      if (first !== undefined) {
+        playStartRef.current?.(first.actionId)
+      }
+      setAlarms((current) => mergeAlarms(current, response.value.fires))
+    })
+    return function cancelPull(): void {
+      cancelled = true
+    }
+  }, [])
+
+  function dismiss(alarm: AlarmFireDto): void {
     stopStartRef.current?.()
-    setAlarms((current) => current.filter((alarm) => alarm.planId !== planId))
+    const key = alarmKey(alarm)
+    setAlarms((current) => current.filter((item) => alarmKey(item) !== key))
   }
 
   function dismissAll(): void {
@@ -56,7 +76,7 @@ export function useAlarms(options: AlarmOptions = {}): AlarmState {
   return { alarms, dismiss, dismissAll }
 }
 
-// 同一计划同一天只保留一条，防止主进程补发时出现重复卡片
+// 同一计划同一天同一时段只保留一条，防止主进程补发时出现重复卡片
 function mergeAlarms(
   current: readonly AlarmFireDto[],
   incoming: readonly AlarmFireDto[],
@@ -67,5 +87,5 @@ function mergeAlarms(
 }
 
 function alarmKey(alarm: AlarmFireDto): string {
-  return `${alarm.planId}:${alarm.fireDate}`
+  return `${alarm.planId}:${alarm.fireDate}:${alarm.startMin}`
 }

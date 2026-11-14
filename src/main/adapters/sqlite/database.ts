@@ -1,7 +1,7 @@
 import Database from 'better-sqlite3'
 import type { Logger } from '@application/ports'
 
-const SCHEMA_VERSION = 13
+const SCHEMA_VERSION = 14
 
 const INIT_SCHEMA_SQL = `
 CREATE TABLE IF NOT EXISTS actions (
@@ -173,6 +173,23 @@ const ACTION_ARCHIVE_SQL = `
 ALTER TABLE actions ADD COLUMN archived_at INTEGER;
 `
 
+// v14：去重键带上开始时刻，改过时段的计划当天可按新时段再提醒一次
+const ALARM_EVENTS_KEY_SQL = `
+CREATE TABLE alarm_events_v14 (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  plan_id INTEGER NOT NULL REFERENCES plans(id) ON DELETE CASCADE,
+  fire_date TEXT NOT NULL,
+  start_min INTEGER NOT NULL,
+  fired_at INTEGER NOT NULL,
+  UNIQUE (plan_id, fire_date, start_min)
+);
+INSERT INTO alarm_events_v14 (id, plan_id, fire_date, start_min, fired_at)
+  SELECT id, plan_id, fire_date, start_min, fired_at FROM alarm_events;
+DROP TABLE alarm_events;
+ALTER TABLE alarm_events_v14 RENAME TO alarm_events;
+CREATE INDEX IF NOT EXISTS idx_alarm_events_date ON alarm_events (fire_date);
+`
+
 // 每个版本一段 SQL，只向前执行；新增表时追加一项并递增 SCHEMA_VERSION
 export type SchemaMigration = {
   readonly version: number
@@ -193,6 +210,7 @@ export const SCHEMA_MIGRATIONS: readonly SchemaMigration[] = [
   { version: 11, sql: CUSTOM_RINGTONES_NO_SIZE_LIMIT_SQL },
   { version: 12, sql: CUSTOM_RINGTONES_CLIP_SQL },
   { version: 13, sql: ACTION_ARCHIVE_SQL },
+  { version: 14, sql: ALARM_EVENTS_KEY_SQL },
 ]
 
 export const LATEST_SCHEMA_VERSION = SCHEMA_VERSION

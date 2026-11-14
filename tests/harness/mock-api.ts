@@ -750,6 +750,9 @@ export function createMockApi(options: { readonly emptyRecords?: boolean } = {})
       }
       return ok(active.sort((a, b) => a.sortOrder - b.sortOrder))
     },
+
+    // 假 API 不模拟主进程推送，补拉永远为空
+    'alarms.pending': () => ok({ fires: [] }),
   }
 
   function invoke<C extends CommandChannel>(

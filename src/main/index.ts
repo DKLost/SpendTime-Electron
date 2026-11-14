@@ -57,6 +57,9 @@ let settingsEffectsRef: SettingsEffects | null = null
 let disposeWindowState: (() => void) | null = null
 let startMaximized = false
 let isQuitting = false
+// 页面挂载前触发的提醒事件会丢失，先缓存到渲染层首次补拉
+let pendingAlarmFires: readonly AlarmFire[] = []
+let alarmFiresPulled = false
 
 // 开机自启由托盘写入 --hidden，启动时不抢焦点
 const startHidden = process.argv.includes('--hidden')
@@ -140,6 +143,7 @@ function bootstrap(): void {
         },
         publishDataChanged: publishDataChanged,
         publishSettingsChanged: publishSettingsChanged,
+        takePendingAlarms: takePendingAlarmFires,
         openPath: openPath,
         exportDiagnostics: diagnostics.exportNow,
         crashDir: diagnostics.crashDir,
@@ -290,12 +294,27 @@ function checkAlarms(): void {
 }
 
 function publishAlarmFires(fires: readonly AlarmFire[]): void {
+  if (!alarmFiresPulled) {
+    pendingAlarmFires = [...pendingAlarmFires, ...fires]
+  }
   broadcast('alarm.fire', { fires: [...fires] })
   showAlarmNotification(fires)
 }
 
+// 首次补拉后页面已完成订阅，后续提醒走广播即可，不必继续累积
+function takePendingAlarmFires(): readonly AlarmFire[] {
+  alarmFiresPulled = true
+  const fires = pendingAlarmFires
+  pendingAlarmFires = []
+  return fires
+}
+
 function publishDataChanged(scope: 'actions' | 'records' | 'plans' | 'todos'): void {
   broadcast('data.changed', { scope })
+  // 计划增删改后立即补查一次，避免编辑出的新时段要等到下个分钟边界才生效
+  if (scope === 'plans') {
+    alarmRuntime?.nudge()
+  }
 }
 
 function publishSettingsChanged(settings: AppSettings): void {
@@ -394,8 +413,9 @@ function applyContentSecurityPolicy(): void {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self' data:",
-    "media-src 'self' spendtime-audio:",
-    "connect-src 'self' spendtime-audio:",
+    // wavesurfer 的 WebAudio 后端会把取到的音频转成 blob: 再交给播放器，缺了它波形与试听全部被拦
+    "media-src 'self' blob: spendtime-audio:",
+    "connect-src 'self' blob: spendtime-audio:",
   ].join('; ')
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {

@@ -66,6 +66,7 @@ import {
   type CommandChannel,
   type CommandRequest,
   type CommandResponse,
+  type AlarmFireDto,
   type SettingsDto,
 } from '@shared/contracts'
 import type { TimerRuntime } from '../runtime/timer-runtime'
@@ -103,6 +104,8 @@ export type HandlerDeps = {
   // 数据变更通知由外壳注入，handlers 不直接依赖 Electron
   readonly publishDataChanged: (scope: DataScope) => void
   readonly publishSettingsChanged: (settings: SettingsDto) => void
+  // 取出渲染层尚未收到的提醒，避免启动瞬间的补发事件因页面未就绪而丢失
+  readonly takePendingAlarms: () => readonly AlarmFireDto[]
   readonly openPath: (path: string) => boolean
   readonly exportDiagnostics: () => string | null
   readonly crashDir: string
@@ -239,6 +242,8 @@ export function createCommandHandlers(deps: HandlerDeps): CommandHandlers {
       publishDataChanged('actions')
       return { ok: true, value: [...result.value] }
     },
+
+    'alarms.pending': () => ({ ok: true, value: { fires: [...deps.takePendingAlarms()] } }),
 
     'settings.get': () => ({
       ok: true,

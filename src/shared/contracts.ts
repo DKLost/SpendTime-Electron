@@ -467,6 +467,11 @@ export const commands = {
     request: z.object({ name: z.string().min(1) }),
     response: commandResult(z.object({ restarting: z.boolean() })),
   },
+  // 渲染层挂载后补拉：启动瞬间到点的提醒在页面订阅事件前就已触发，只能靠拉取补上
+  'alarms.pending': {
+    request: z.object({}),
+    response: commandResult(z.object({ fires: z.array(AlarmFireSchema) })),
+  },
   'plans.listWeek': {
     request: z.object({}),
     response: commandResult(z.array(PlanViewSchema)),

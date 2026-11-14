@@ -29,7 +29,7 @@ function createFakeAlarmRepo(): AlarmEventRepo {
   return {
     listKeysByDate: () => [...keys],
     record: (fire: AlarmFire) => {
-      keys.add(alarmKey(fire.planId, fire.fireDate))
+      keys.add(alarmKey(fire.planId, fire.fireDate, fire.startMin))
     },
   }
 }
@@ -68,7 +68,7 @@ describe('markAlarmsFired', () => {
     const fires = collectAlarms([plan()], repo, FRIDAY_0905, OFFSET)
     markAlarmsFired(repo, fires, FRIDAY_0905)
 
-    expect(repo.listKeysByDate('2026-11-13')).toEqual(['1:2026-11-13'])
+    expect(repo.listKeysByDate('2026-11-13')).toEqual(['1:2026-11-13:540'])
     expect(collectAlarms([plan()], repo, FRIDAY_0905, OFFSET)).toEqual([])
   })
 })

@@ -33,6 +33,7 @@ import {
   type HandlerDeps,
 } from '../../src/main/ipc/handlers'
 import { createTimerRuntime, type TimerRuntime } from '../../src/main/runtime/timer-runtime'
+import type { AlarmFireDto } from '../../src/shared/contracts'
 
 export const TEST_OFFSET_MINUTES = 480
 export const TEST_NOW = Date.UTC(2026, 10, 13, 2, 0)
@@ -153,6 +154,7 @@ export function createHandlerHarness(): HandlerHarness {
       published.push(scope)
     },
     publishSettingsChanged: (): void => undefined,
+    takePendingAlarms: (): readonly AlarmFireDto[] => [],
     openPath: (): boolean => true,
     exportDiagnostics: (): string | null => null,
     crashDir: 'test-crashes',

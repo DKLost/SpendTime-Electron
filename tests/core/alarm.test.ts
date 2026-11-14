@@ -65,8 +65,23 @@ describe('collectDueAlarms', () => {
   })
 
   it('已记录的计划不再重复触发', () => {
-    const fired = new Set([alarmKey(1, '2026-11-13')])
+    const fired = new Set([alarmKey(1, '2026-11-13', 540)])
     expect(collectDueAlarms([FRIDAY], 5, '2026-11-13', 545, fired)).toEqual([])
+  })
+
+  it('同一时段之外的已触发记录不影响当前时段', () => {
+    const fired = new Set([alarmKey(1, '2026-11-13', 480)])
+    expect(collectDueAlarms([FRIDAY], 5, '2026-11-13', 545, fired)).toHaveLength(1)
+  })
+
+  it('改过时段的计划按新时段重新触发，同一时段仍只提醒一次', () => {
+    const edited: AlarmPlan = { ...FRIDAY, startMin: 600, endMin: 660 }
+    const fired = new Set([alarmKey(1, '2026-11-13', 540)])
+    const fires = collectDueAlarms([edited], 5, '2026-11-13', 600, fired)
+    expect(fires.map((fire) => fire.startMin)).toEqual([600])
+    expect(
+      collectDueAlarms([edited], 5, '2026-11-13', 600, new Set([...fired, alarmKey(1, '2026-11-13', 600)])),
+    ).toEqual([])
   })
 
   it('关闭提醒的计划不参与判定', () => {
