@@ -1,0 +1,99 @@
+/* PlayStation 浅色模式：白底、蓝 CTA、8px 卡片、4px 输入、胶囊按钮 */
+[data-theme='playstation-light'] {
+  --color-bg-deep: #f3f3f3;
+  --color-bg: #ffffff;
+  --color-surface-alt: #f5f7fa;
+  --color-surface-raised: #ffffff;
+  --color-input: #ffffff;
+
+  --color-border: #e5e5e5;
+  --color-border-soft: #f3f3f3;
+  --color-border-strong: #cccccc;
+
+  --color-text: #000000;
+  --color-text-strong: #000000;
+  --color-muted: #6b6b6b;
+  --color-text-weak: rgba(0, 0, 0, 0.6);
+  --color-placeholder: #6b6b6b;
+  --color-disabled: #cccccc;
+
+  --color-accent: #0070d1;
+  --color-accent-deep: #0064b7;
+  --color-accent-soft: #cfe6fb;
+  --color-accent-faint: #eaf4fd;
+  --color-danger: #c81b3a;
+  --color-on-primary: #ffffff;
+  --text-shadow-primary: none;
+
+  --color-danger-text: #a5142f;
+  --color-danger-faint: rgba(200, 27, 58, 0.08);
+  --color-accent-tint: rgba(0, 112, 209, 0.08);
+  --color-accent-soft-bg: rgba(0, 112, 209, 0.12);
+  --color-accent-badge: rgba(0, 112, 209, 0.14);
+  --color-accent-chip: rgba(0, 112, 209, 0.06);
+  --color-selection: rgba(0, 112, 209, 0.24);
+  --color-focus-ring: rgba(0, 112, 209, 0.35);
+  --color-row-stripe: rgba(0, 0, 0, 0.03);
+  --color-disabled-bg: #f3f3f3;
+  --color-table-head: #f5f7fa;
+  --color-track: #f3f3f3;
+  --color-scrollbar: #cccccc;
+  --color-scrollbar-hover: #b3b3b3;
+
+  /* 规范：静止卡片不浮起，按压才有 0 4px 12px rgba(0,0,0,0.16) */
+  --glaze-texture: linear-gradient(104deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0);
+  --shadow-panel: 0 0 0 rgba(0, 0, 0, 0);
+  --shadow-control: inset 0 1px 0 rgba(255, 255, 255, 0);
+  --shadow-button: inset 0 1px 0 rgba(255, 255, 255, 0);
+  --shadow-text-clock: 0 1px 0 rgba(255, 255, 255, 0);
+  --shadow-button-active: 0 4px 12px rgba(0, 0, 0, 0.16);
+
+  --gradient-panel: linear-gradient(158deg, #ffffff 0%, #ffffff 100%);
+  --gradient-control: linear-gradient(166deg, #ffffff 0%, #ffffff 100%);
+  --gradient-control-hover: linear-gradient(166deg, #ffffff 0%, #f5f7fa 100%);
+  --gradient-button: linear-gradient(166deg, #ffffff 0%, #f3f3f3 100%);
+  --gradient-button-hover: linear-gradient(166deg, #f5f7fa 0%, #ececec 100%);
+  --gradient-button-active: linear-gradient(180deg, #e6e6e6 0%, #dcdcdc 100%);
+  --gradient-banner: linear-gradient(158deg, #ffffff 0%, #f5f7fa 100%);
+  /* 品牌蓝配白字：常态约 4.95:1，按下取 primary-active #004d8d */
+  --gradient-primary: linear-gradient(170deg, #0070d1 0%, #0070d1 52%, #0070d1 100%);
+  --gradient-primary-hover: linear-gradient(170deg, #0a78d9 0%, #0a78d9 52%, #0a78d9 100%);
+  --gradient-primary-active: linear-gradient(170deg, #004d8d 0%, #004d8d 52%, #004d8d 100%);
+
+  --font-ui: 'Roboto', 'PlayStation SST', 'Inter', Arial, 'Microsoft YaHei', sans-serif;
+  --font-display: var(--font-ui);
+  --heading-weight: 300;
+  --button-font-weight: 700;
+  --button-letter-spacing: 0.324px;
+  --button-text-transform: none;
+
+  --radius-xs: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-button: 9999px;
+  --radius-panel: 8px;
+  --radius-control: 4px;
+
+  color-scheme: light;
+}
+
+/* filter-pill 选中态按规范翻为白底黑字，与蓝色 CTA 区分 */
+[data-theme='playstation-light'] .weekday-tab.active,
+[data-theme='playstation-light'] .weekday-tab.active:hover:not(:disabled) {
+  background: var(--color-surface-raised);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+/* 时段底色（仅时间格）：清晨偏 PS 蓝，午后暖橙略收，
+   夜间落在冷灰，不与选中态的高亮蓝抢层级。 */
+[data-theme='playstation-light'] {
+  --slot-night-bg: rgba(60, 88, 125, 0.055);
+  --slot-dawn-bg: rgba(30, 170, 150, 0.12);
+  --slot-morning-bg: rgba(0, 112, 204, 0.12);
+  --slot-noon-bg: rgba(235, 190, 60, 0.14);
+  --slot-afternoon-bg: rgba(240, 130, 40, 0.12);
+  --slot-evening-bg: rgba(150, 60, 180, 0.09);
+  --slot-late-night-bg: rgba(18, 24, 36, 0.075);
+}

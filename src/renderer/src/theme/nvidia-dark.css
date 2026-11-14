@@ -1,0 +1,96 @@
+/* NVIDIA 深色模式：黑底章节、白色正文、同一 NVIDIA 绿强调，发丝线分隔 */
+[data-theme='nvidia-dark'] {
+  --color-bg-deep: #000000;
+  --color-bg: #000000;
+  --color-surface-alt: #1a1a1a;
+  --color-surface-raised: #1a1a1a;
+  --color-input: #1a1a1a;
+
+  --color-border: #5e5e5e;
+  --color-border-soft: rgba(255, 255, 255, 0.14);
+  --color-border-strong: #898989;
+
+  --color-text: #ffffff;
+  --color-text-strong: #ffffff;
+  --color-muted: rgba(255, 255, 255, 0.7);
+  --color-text-weak: rgba(255, 255, 255, 0.7);
+  --color-placeholder: rgba(255, 255, 255, 0.5);
+  --color-disabled: #a7a7a7;
+
+  --color-accent: #76b900;
+  --color-accent-deep: #76b900;
+  --color-accent-soft: #5a8d00;
+  --color-accent-faint: #142000;
+  --color-danger: #e52020;
+  --color-on-primary: #000000;
+  --text-shadow-primary: none;
+
+  --color-danger-text: #ff6b6b;
+  --color-danger-faint: rgba(229, 32, 32, 0.16);
+  --color-accent-tint: rgba(118, 185, 0, 0.14);
+  --color-accent-soft-bg: rgba(118, 185, 0, 0.18);
+  --color-accent-badge: rgba(118, 185, 0, 0.2);
+  --color-accent-chip: rgba(118, 185, 0, 0.1);
+  --color-selection: rgba(118, 185, 0, 0.32);
+  --color-focus-ring: rgba(118, 185, 0, 0.45);
+  --color-row-stripe: rgba(255, 255, 255, 0.04);
+  --color-disabled-bg: #1a1a1a;
+  --color-table-head: #1a1a1a;
+  --color-track: #262626;
+  --color-scrollbar: #5e5e5e;
+  --color-scrollbar-hover: #898989;
+
+  --glaze-texture: linear-gradient(104deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 58%);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --shadow-panel: 0 0 0 rgba(0, 0, 0, 0);
+  --shadow-control: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --shadow-button: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --shadow-text-clock: 0 1px 0 rgba(0, 0, 0, 0.6);
+  --shadow-button-active: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  --gradient-panel: linear-gradient(158deg, #1a1a1a 0%, #1a1a1a 100%);
+  --gradient-control: linear-gradient(166deg, #1a1a1a 0%, #1a1a1a 100%);
+  --gradient-control-hover: linear-gradient(166deg, #242424 0%, #1c1c1c 100%);
+  --gradient-button: linear-gradient(166deg, #1a1a1a 0%, #121212 100%);
+  --gradient-button-hover: linear-gradient(166deg, #242424 0%, #1a1a1a 100%);
+  --gradient-button-active: linear-gradient(180deg, #0f0f0f 0%, #080808 100%);
+  --gradient-banner: linear-gradient(158deg, #1a1a1a 0%, #000000 100%);
+  --gradient-primary: linear-gradient(170deg, #76b900 0%, #76b900 52%, #76b900 100%);
+  --gradient-primary-hover: linear-gradient(170deg, #76b900 0%, #76b900 52%, #76b900 100%);
+  --gradient-primary-active: linear-gradient(170deg, #5a8d00 0%, #5a8d00 52%, #5a8d00 100%);
+
+  --font-ui: 'Inter', 'NVIDIA-EMEA', Arial, 'Microsoft YaHei', sans-serif;
+  --font-display: var(--font-ui);
+  --heading-weight: 700;
+  --button-font-weight: 700;
+  --button-letter-spacing: 0;
+  --button-text-transform: none;
+
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-button: 2px;
+  --radius-panel: 2px;
+  --radius-control: 2px;
+
+  color-scheme: dark;
+}
+
+[data-theme='nvidia-dark'] .weekday-tab.active,
+[data-theme='nvidia-dark'] .weekday-tab.active:hover:not(:disabled) {
+  background: var(--color-text-strong);
+  border-color: var(--color-text-strong);
+  color: var(--color-bg);
+}
+
+/* 时段底色（仅时间格）：#1a1a1a 更黑，偏置略加深才能分辨，
+   夜间几乎融进表面，暖色时段保留一点暗琥珀。 */
+[data-theme='nvidia-dark'] {
+  --slot-night-bg: rgba(18, 40, 95, 0.45);
+  --slot-dawn-bg: rgba(6, 52, 46, 0.5);
+  --slot-morning-bg: rgba(8, 44, 88, 0.55);
+  --slot-noon-bg: rgba(58, 46, 6, 0.55);
+  --slot-afternoon-bg: rgba(82, 36, 8, 0.5);
+  --slot-evening-bg: rgba(72, 30, 92, 0.45);
+  --slot-late-night-bg: rgba(4, 6, 14, 0.55);
+}

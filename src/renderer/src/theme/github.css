@@ -1,0 +1,75 @@
+/* 主题文件只包含令牌覆盖，不写结构样式；新增主题见 theme/index.ts */
+[data-theme='github'] {
+  --color-bg-deep: #eaeef2;
+  --color-bg: #f6f8fa;
+  --color-surface-alt: #f0f3f6;
+  --color-surface-raised: #ffffff;
+  --color-input: #ffffff;
+
+  --color-border: #d0d7de;
+  --color-border-soft: #e6eaef;
+  --color-border-strong: #afb8c1;
+
+  --color-text: #1f2328;
+  --color-text-strong: #010409;
+  --color-muted: #57606a;
+  --color-text-weak: #6e7781;
+  --color-placeholder: #6e7781;
+  --color-disabled: #8c959f;
+
+  --color-accent: #0969da;
+  --color-accent-deep: #0550ae;
+  --color-accent-soft: #b6d7ff;
+  --color-accent-faint: #ddf4ff;
+  --color-danger: #cf222e;
+
+  --color-danger-text: #a40e26;
+  --color-danger-faint: rgba(207, 34, 46, 0.08);
+  --color-accent-tint: rgba(9, 105, 218, 0.08);
+  --color-accent-soft-bg: rgba(9, 105, 218, 0.1);
+  --color-accent-badge: rgba(9, 105, 218, 0.12);
+  --color-accent-chip: rgba(9, 105, 218, 0.06);
+  --color-selection: rgba(9, 105, 218, 0.22);
+  --color-focus-ring: rgba(9, 105, 218, 0.35);
+  --color-row-stripe: rgba(31, 35, 40, 0.025);
+  --color-disabled-bg: #f6f8fa;
+  --color-table-head: #f6f8fa;
+  --color-track: #eaeef2;
+  --color-scrollbar: #d0d7de;
+  --color-scrollbar-hover: #afb8c1;
+
+  /* GitHub 偏平面：去掉釉光与内高光，只保留 1px 边框 */
+  --glaze-texture: linear-gradient(104deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0);
+  --shadow-panel: 0 1px 0 rgba(31, 35, 40, 0.04);
+  --shadow-control: inset 0 1px 0 rgba(255, 255, 255, 0);
+  --shadow-button: inset 0 1px 0 rgba(255, 255, 255, 0);
+  --shadow-text-clock: 0 1px 0 rgba(255, 255, 255, 0);
+  --shadow-button-active: inset 0 2px 3px rgba(31, 35, 40, 0.1);
+
+  --gradient-panel: linear-gradient(158deg, #ffffff 0%, #ffffff 100%);
+  --gradient-control: linear-gradient(166deg, #ffffff 0%, #f6f8fa 100%);
+  --gradient-control-hover: linear-gradient(166deg, #f6f8fa 0%, #eef1f4 100%);
+  --gradient-button: linear-gradient(166deg, #f6f8fa 0%, #eaeef2 100%);
+  --gradient-button-hover: linear-gradient(166deg, #eef1f4 0%, #e1e6ea 100%);
+  --gradient-button-active: linear-gradient(180deg, #e1e6ea 0%, #d8dee4 100%);
+  --gradient-banner: linear-gradient(158deg, #ffffff 0%, #f6f8fa 100%);
+  /* 白字对比度：最亮端 #1f6feb 约 4.63 */
+  --gradient-primary: linear-gradient(170deg, #1f6feb 0%, #1158c7 52%, #0b4bb0 100%);
+  --gradient-primary-hover: linear-gradient(170deg, #1a66e0 0%, #1258c4 52%, #0d4dad 100%);
+  --gradient-primary-active: linear-gradient(170deg, #1859c9 0%, #0e4aa8 52%, #093f95 100%);
+
+  color-scheme: light;
+}
+
+/* 时段底色（仅时间格）：沿用 GitHub 的中性灰蓝基调，
+   清晨与午后比默认主题略收敛，避免彩色抢过品牌蓝。 */
+[data-theme='github'] {
+  --slot-night-bg: rgba(87, 96, 106, 0.06);
+  --slot-dawn-bg: rgba(31, 136, 121, 0.12);
+  --slot-morning-bg: rgba(9, 105, 218, 0.1);
+  --slot-noon-bg: rgba(154, 103, 0, 0.12);
+  --slot-afternoon-bg: rgba(188, 76, 0, 0.12);
+  --slot-evening-bg: rgba(130, 80, 223, 0.1);
+  --slot-late-night-bg: rgba(36, 41, 47, 0.08);
+}

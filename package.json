@@ -1,0 +1,47 @@
+{
+  "name": "spendtime-electron",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SpendTime 桌面版：计时、周计划与提醒、待办、行动、时间记录与统计",
+  "author": "SpendTime",
+  "license": "AGPL-3.0-only",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "npm run typecheck && electron-vite build",
+    "preview": "electron-vite preview",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+    "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
+    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:renderer": "node tests/harness/run.mjs",
+    "e2e": "npm run build && node tests/e2e/app.e2e.mjs",
+    "depcruise": "depcruise src --config .dependency-cruiser.cjs",
+    "icon": "node scripts/generate-icon.mjs",
+    "package": "npm run icon && npm run build && electron-builder"
+  },
+  "dependencies": {
+    "@wavesurfer/react": "1.0.14",
+    "better-sqlite3": "13.0.3",
+    "wavesurfer.js": "8.1.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "5.2.0",
+    "dependency-cruiser": "^18.7.2",
+    "electron": "45.2.3",
+    "electron-builder": "^26.18.0",
+    "electron-vite": "5.0.0",
+    "playwright-core": "1.65.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "typescript": "5.9.3",
+    "vite": "7.3.8",
+    "vitest": "5.1.0"
+  }
+}

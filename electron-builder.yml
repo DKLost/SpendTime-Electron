@@ -1,0 +1,45 @@
+appId: com.spendtime.desktop
+productName: SpendTime
+copyright: Copyright © 2026 SpendTime
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - out/**/*
+  - package.json
+
+# 内置铃声通过 spendtime-audio:// 协议读取，打包后落在 resources/ringtones
+extraResources:
+  - from: resources/ringtones
+    to: ringtones
+
+# better-sqlite3 使用 N-API 预编译二进制，避免安装时依赖本机编译工具链
+npmRebuild: false
+asarUnpack:
+  - node_modules/better-sqlite3/**
+
+win:
+  # 未配置代码签名证书，只跳过签名，保留图标与版本信息写入
+  signExecutable: false
+  icon: build/icon.png
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: SpendTime
+  artifactName: SpendTime-${version}-Setup.${ext}
+
+portable:
+  artifactName: SpendTime-${version}-Portable.${ext}

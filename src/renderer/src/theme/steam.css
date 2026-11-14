@@ -1,0 +1,140 @@
+/* Steam：按用户参考图（docs/steam-ref.png）重做的深蓝分层
+   主色来源：用户指定 #171d25（更深层）、#23272f（页面/顶栏/面板）、
+   #1a9ffd / #1999ff（品牌蓝）、#3e4e69（边框/抬升面）、#67707b（次要文字基色）。
+   对比度处理：品牌蓝作为深底上的文字/描边；主按钮使用品牌蓝压深后的渐变配白字；
+   亮蓝铺底的选中态改用 #171d25 深色字；#67707b 仅用于占位/禁用，
+   正文次要文字提升为同色系 #949eac，满足 WCAG AA。 */
+[data-theme='steam'] {
+  /* 深基层：侧栏、输入框、凹槽 */
+  --color-bg-deep: #171d25;
+  /* 页面/顶栏/面板的较亮基层 */
+  --color-bg: #23272f;
+  --color-surface-alt: #1d222a;
+  --color-surface-raised: #262d36;
+  --color-input: #171d25;
+
+  --color-border: #3e4e69;
+  --color-border-soft: #2c333d;
+  --color-border-strong: #4d5f7c;
+
+  --color-text: #d6dee7;
+  --color-text-strong: #ffffff;
+  --color-muted: #949eac;
+  --color-text-weak: #949eac;
+  --color-placeholder: #67707b;
+  --color-disabled: #67707b;
+
+  --color-accent: #1a9ffd;
+  --color-accent-deep: #1999ff;
+  --color-accent-soft: #3e4e69;
+  --color-accent-faint: rgba(26, 159, 253, 0.08);
+  --color-danger: #ff7a6e;
+
+  --color-danger-text: #ff7a6e;
+  --color-danger-faint: rgba(255, 122, 110, 0.14);
+  --color-accent-tint: rgba(26, 159, 253, 0.12);
+  --color-accent-soft-bg: rgba(26, 159, 253, 0.16);
+  --color-accent-badge: rgba(26, 159, 253, 0.2);
+  --color-accent-chip: rgba(26, 159, 253, 0.1);
+  --color-selection: rgba(26, 159, 253, 0.35);
+  --color-focus-ring: rgba(26, 159, 253, 0.55);
+  --color-row-stripe: rgba(255, 255, 255, 0.025);
+  --color-disabled-bg: #1a1f26;
+  --color-table-head: #1d222a;
+  --color-track: #171d25;
+  --color-scrollbar: #3e4e69;
+  --color-scrollbar-hover: #4d5f7c;
+
+  /* 客户端的质感来自轻微顶光与黑色投影，而不是大圆角 */
+  --glaze-texture: linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0%, rgba(255, 255, 255, 0) 56%);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-panel:
+    0 1px 0 rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  --shadow-control: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-button:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 1px 0 rgba(0, 0, 0, 0.45);
+  --shadow-text-clock: 0 1px 0 rgba(0, 0, 0, 0.65);
+  --shadow-button-active: inset 0 2px 4px rgba(0, 0, 0, 0.55);
+
+  --gradient-panel: linear-gradient(180deg, #272c35 0%, #23272f 100%);
+  --gradient-control: linear-gradient(180deg, #171d25 0%, #1a2029 100%);
+  --gradient-control-hover: linear-gradient(180deg, #2a313b 0%, #23272f 100%);
+  --gradient-button: linear-gradient(180deg, #3e4e69 0%, #2a313b 100%);
+  --gradient-button-hover: linear-gradient(180deg, #4a5c7a 0%, #313a47 100%);
+  --gradient-button-active: linear-gradient(180deg, #1a2029 0%, #171d25 100%);
+  --gradient-banner: linear-gradient(180deg, #1f242c 0%, #23272f 100%);
+  /* 品牌蓝压深后铺底，白字在两端均 >= 4.5:1；亮蓝留给文字/焦点/选中 */
+  --gradient-primary: linear-gradient(180deg, #1777bd 0%, #135f96 100%);
+  --gradient-primary-hover: linear-gradient(180deg, #166fae 0%, #11557f 100%);
+  --gradient-primary-active: linear-gradient(180deg, #125a8c 0%, #0f4a73 100%);
+  --color-on-primary: #ffffff;
+  --text-shadow-primary: 0 1px 0 rgba(0, 0, 0, 0.35);
+
+  --font-ui: 'Motiva Sans', Arial, 'Pretendard', 'Noto Sans KR', 'Microsoft YaHei', sans-serif;
+  --font-display: var(--font-ui);
+  --font-mono: Consolas, 'JetBrains Mono', monospace;
+  --heading-weight: 600;
+  --button-font-weight: 400;
+  --button-letter-spacing: 0;
+  --button-text-transform: none;
+
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 3px;
+  --radius-button: 3px;
+  --radius-panel: 3px;
+  --radius-control: 3px;
+
+  color-scheme: dark;
+}
+
+/* 顶栏：参考图里比内容区略亮的一层，底部一条钢蓝分隔 */
+[data-theme='steam'] .app-header {
+  background: linear-gradient(180deg, #2a3039 0%, #23272f 100%);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+}
+
+/* 左栏作为侧边导航使用更深底色，面板因此有抬升感 */
+[data-theme='steam'] .column-scroll {
+  background: var(--color-bg-deep);
+}
+
+[data-theme='steam'] .column-divider {
+  background: var(--color-border);
+}
+
+[data-theme='steam'] .panel {
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-panel);
+}
+
+/* 选中态：品牌蓝铺底 + 深色字，避免白字在亮蓝上对比不足 */
+[data-theme='steam'] .weekday-tab.active,
+[data-theme='steam'] .weekday-tab.active:hover:not(:disabled) {
+  background: linear-gradient(180deg, #1a9ffd 0%, #1999ff 100%);
+  border-color: #1a9ffd;
+  color: #171d25;
+  text-shadow: none;
+}
+
+[data-theme='steam'] .settings-tab.active {
+  background: var(--color-bg);
+  border-color: var(--color-border);
+  color: var(--color-accent);
+  box-shadow: inset 0 2px 0 var(--color-accent);
+}
+
+/* 时段底色（仅时间格）：#262d36 的中深表面用暗色偏置，
+   合成后仍贴近表面明度，蓝色时间文字保持 4.5:1 以上。 */
+[data-theme='steam'] {
+  --slot-night-bg: rgba(20, 40, 90, 0.45);
+  --slot-dawn-bg: rgba(8, 50, 44, 0.5);
+  --slot-morning-bg: rgba(8, 45, 85, 0.55);
+  --slot-noon-bg: rgba(56, 44, 8, 0.55);
+  --slot-afternoon-bg: rgba(80, 35, 10, 0.5);
+  --slot-evening-bg: rgba(70, 30, 90, 0.45);
+  --slot-late-night-bg: rgba(5, 8, 16, 0.5);
+}

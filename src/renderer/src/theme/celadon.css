@@ -1,0 +1,111 @@
+/* 主题文件只包含令牌覆盖，不写结构样式；新增主题见 theme/index.ts */
+:root,
+[data-theme='celadon'] {
+  /* 三级底色：页面外层偏冷青，面板近纸白，控件居于两者之间 */
+  --color-bg-deep: #dbe5e9;
+  --color-bg: #e2eaed;
+  --color-surface-alt: #e3eff2;
+  --color-surface-raised: #ffffff;
+  --color-input: #eff4f6;
+
+  /* 边框比所在底色深一档，保证三级轮廓清楚 */
+  --color-border: #88a2aa;
+  --color-border-soft: #c2d2d8;
+  --color-border-strong: #647f89;
+
+  /* 深青墨三级文字，按三种底色中最深的页面外层仍满足 AA */
+  --color-text: #1a2c33;
+  --color-text-strong: #0f2026;
+  --color-muted: #3b525a;
+  --color-text-weak: #516972;
+  --color-placeholder: #546d76;
+  --color-disabled: #7a8e96;
+  /* 强调色取自釉面中间调并偏向青蓝，主操作使用其压深版本 */
+  --color-accent: #3f7fa1;
+  --color-accent-deep: #2f6485;
+  --color-accent-soft: #b8d5dc;
+  --color-accent-faint: #e3eff2;
+  --color-danger: #9e4a43;
+
+  /* 语义化派生色：主题只需覆盖这些令牌即可整体换肤 */
+  --color-danger-text: #96463f;
+  --color-danger-faint: rgba(168, 84, 76, 0.1);
+  --color-accent-tint: rgba(79, 127, 139, 0.1);
+  --color-accent-soft-bg: rgba(79, 127, 139, 0.14);
+  --color-accent-badge: rgba(79, 127, 139, 0.16);
+  --color-accent-chip: rgba(79, 127, 139, 0.07);
+  --color-selection: rgba(79, 127, 139, 0.28);
+  --color-focus-ring: rgba(79, 127, 139, 0.3);
+  --color-row-stripe: rgba(24, 60, 72, 0.035);
+  --color-disabled-bg: #f1f4f5;
+  --color-table-head: #eef4f6;
+  --color-track: #dce7eb;
+  --color-scrollbar: #b6c9c1;
+  --color-scrollbar-hover: #93ada3;
+  --shadow-text-clock: 0 1px 0 rgba(255, 255, 255, 0.8);
+  --gradient-banner: linear-gradient(158deg, #fcfdfe 0%, #f4f8fa 100%);
+  --gradient-button-active: linear-gradient(180deg, #eef4f6 0%, #e3ecef 100%);
+  --shadow-button-active: inset 0 2px 3px rgba(30, 55, 63, 0.14);
+
+  /* 锐利圆角：禁止大圆角与胶囊 */
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+
+  /* 间距、字号与行高属于版式底座，统一在 theme/index.css 中定义 */
+
+  /* 釉光：斜向柔光 + 顶部内高光，克制到不出现分段与塑料感 */
+  --glaze-texture:
+    linear-gradient(104deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.08) 34%, rgba(255, 255, 255, 0) 58%);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-panel:
+    inset 0 1px 0 #ffffff,
+    inset 0 -1px 2px rgba(30, 55, 63, 0.05);
+  --shadow-control:
+    var(--shadow-inset),
+    inset 0 1px 3px rgba(30, 55, 63, 0.08),
+    inset 0 -1px 0 rgba(30, 55, 63, 0.08);
+  --shadow-button:
+    var(--shadow-inset),
+    inset 0 -1px 0 rgba(30, 55, 63, 0.12);
+
+  /* 面板与控件用有方向的渐变托出釉面层次，三级底色关系保持不变 */
+  --gradient-panel: linear-gradient(158deg, #fcfdfe 0%, #f8fbfc 55%, #f4f8fa 100%);
+  --gradient-control: linear-gradient(166deg, #fafdfe 0%, #f0f5f7 58%, #eaf1f4 100%);
+  --gradient-control-hover: linear-gradient(166deg, #fcfeff 0%, #e8f1f4 58%, #e1ecef 100%);
+  --gradient-button: linear-gradient(166deg, #fcfefe 0%, #f1f6f8 60%, #ebf2f5 100%);
+  --gradient-button-hover: linear-gradient(166deg, #fdfeff 0%, #e8f1f4 58%, #e1ecef 100%);
+  /* 主按钮：三态都保持白字对比度 >= 4.5:1（最亮端约 4.8） */
+  --gradient-primary: linear-gradient(170deg, #3e7898 0%, #356b8c 52%, #2e5f7e 100%);
+  --gradient-primary-hover: linear-gradient(170deg, #417a9a 0%, #386f90 52%, #316487 100%);
+  --gradient-primary-active: linear-gradient(170deg, #2c5c7a 0%, #26526e 52%, #214962 100%);
+
+  --font-ui: 'Segoe UI', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'Cascadia Mono', 'Consolas', monospace;
+  --font-display: var(--font-ui);
+  --heading-weight: 600;
+  --button-font-weight: 600;
+  --button-letter-spacing: 0;
+  --button-text-transform: none;
+
+  /* 主按钮上的文字与圆角也走令牌，深浅主题各自覆盖 */
+  --color-on-primary: #ffffff;
+  --text-shadow-primary: 0 1px 1px rgba(20, 40, 46, 0.4);
+  --radius-button: 2px;
+  --radius-panel: 2px;
+  --radius-control: 2px;
+
+  color-scheme: light;
+}
+
+/* 时段底色（仅时间格）：粉青瓷表面用最低强度的同色相偏置，
+   冷色夜间只留淡冷灰，暖色午间也不铺满。 */
+[data-theme='celadon'] {
+  --slot-night-bg: rgba(66, 92, 130, 0.055);
+  --slot-dawn-bg: rgba(52, 186, 166, 0.14);
+  --slot-morning-bg: rgba(52, 150, 219, 0.13);
+  --slot-noon-bg: rgba(240, 196, 70, 0.15);
+  --slot-afternoon-bg: rgba(236, 138, 52, 0.13);
+  --slot-evening-bg: rgba(139, 58, 165, 0.09);
+  --slot-late-night-bg: rgba(23, 28, 41, 0.08);
+}

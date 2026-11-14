@@ -1,0 +1,76 @@
+/* 主题入口：新增主题时在此追加一行 import，并同步 theme/index.ts 的注册表 */
+@import './celadon.css';
+@import './github.css';
+@import './steam.css';
+@import './nvidia-light.css';
+@import './nvidia-dark.css';
+@import './playstation-light.css';
+@import './playstation-dark.css';
+
+/* 版式底座：间距、字号、行高与控件高度与主题无关，所有主题共用一套。
+   数值以周计划表为基准：表头 28px、正文行 30px、单元格左右内边距 8px、
+   正文 12px、元信息 10px；控件高度因此也取 30px，行内小控件取 24/20px。 */
+:root {
+  --space-2xs: 2px;
+  --space-1: 4px;
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 10px;
+  --space-5: 12px;
+  --space-6: 16px;
+
+  --text-xs: 10px;
+  --text-sm: 11px;
+  --text-md: 12px;
+  --text-lg: 14px;
+  --text-xl: 18px;
+  --text-clock: 32px;
+
+  --row-height: 30px;
+  --row-height-head: 28px;
+  --control-height: 30px;
+  --control-height-sm: 24px;
+  --control-height-xs: 20px;
+  --waveform-height: 64px;
+  --cell-padding-x: 8px;
+  --cell-padding-tight: 2px;
+  --time-column-width: 96px;
+  --index-column-width: 28px;
+  --alarm-column-width: 40px;
+  --actions-column-width: 80px;
+  --duration-column-width: 84px;
+}
+
+/* 紧凑密度：同一批尺寸令牌整体下调，结构样式不需要第二份。
+   行高、控件高度、间距、列宽与字号一起压缩，约为基础档的 0.75–0.8；
+   颜色、圆角与主题无关的质感保持不变。 */
+html[data-density='compact'] {
+  --space-2xs: 2px;
+  --space-1: 3px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-5: 9px;
+  --space-6: 12px;
+
+  --text-xs: 9px;
+  --text-sm: 10px;
+  --text-md: 11px;
+  --text-lg: 12px;
+  --text-xl: 16px;
+  --text-clock: 26px;
+
+  --row-height: 24px;
+  --row-height-head: 22px;
+  --control-height: 24px;
+  --control-height-sm: 20px;
+  --control-height-xs: 17px;
+  --waveform-height: 40px;
+  --cell-padding-x: 6px;
+  --cell-padding-tight: 2px;
+  --time-column-width: 84px;
+  --index-column-width: 22px;
+  --alarm-column-width: 32px;
+  --actions-column-width: 72px;
+  --duration-column-width: 64px;
+}
