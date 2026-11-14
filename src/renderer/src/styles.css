@@ -198,8 +198,10 @@ textarea {
 .column-grow {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   max-width: none;
   width: auto;
+  overflow: hidden;
 }
 
 .column-scroll {
@@ -255,6 +257,8 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
   margin-bottom: var(--space-4);
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--color-border-soft);
@@ -286,6 +290,8 @@ textarea {
 .panel-head-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: var(--space-2);
 }
 
@@ -655,9 +661,8 @@ button:disabled {
 
 .clock-panel {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-5);
+  align-items: flex-start;
+  gap: var(--space-4) var(--space-5);
   flex-wrap: wrap;
 }
 
@@ -666,9 +671,18 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: var(--space-2xs);
+  min-width: 0;
+}
+
+/* 空间不足时整块换到下一行并靠右，标签与内容保持同一条对齐线 */
+.clock-now {
+  flex: 0 1 auto;
 }
 
 .clock-next {
+  flex: 0 0 auto;
+  max-width: 100%;
+  margin-left: auto;
   align-items: flex-end;
   text-align: right;
 }
@@ -714,6 +728,7 @@ button:disabled {
 
 .stats-presets {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-2);
   margin-bottom: var(--space-3);
 }
@@ -919,6 +934,46 @@ html[data-slot-tint='on'] .time-table tbody tr[data-slot='late-night'] td.time-c
 
 .record-table .duration-cell {
   width: var(--duration-column-width);
+}
+
+/* 记录表在自己的区域内滚动，时钟与统计保持固定，左栏不被整页滚动带走 */
+.records-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--space-2);
+  padding-bottom: var(--space-2);
+  container-type: inline-size;
+}
+
+/* 末尾空档已由滚动区底部留白承接，避免多出一截滚动高度 */
+.records-scroll .records-gaps {
+  margin-bottom: 0;
+}
+
+/* 最小窗口且左栏拖到最宽时，右栏仅剩约 250px：收敛为三列，保操作按钮完整可点 */
+@container (max-width: 300px) {
+  .record-table {
+    table-layout: fixed;
+  }
+
+  .record-table .time-cell {
+    width: 84px;
+  }
+
+  .record-table .actions-cell {
+    width: 88px;
+  }
+
+  .record-table .duration-cell {
+    display: none;
+  }
+
+  .record-table td.action-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 /* 日期回溯：前一天/后一天贴着日期框，回到今天独立成按钮 */

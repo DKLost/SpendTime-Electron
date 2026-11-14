@@ -104,36 +104,38 @@ export function RecordList(props: RecordListProps) {
         </button>
       </div>
 
-      {loading ? (
-        <p className="empty">{t('records.loading')}</p>
-      ) : isFuture ? (
-        <p className="empty">{t('records.futureEmpty')}</p>
-      ) : records.length === 0 ? (
-        <p className="empty">{t('records.empty')}</p>
-      ) : (
-        <>
-          <table className="time-table record-table">
-            <thead>
-              <tr>
-                <th className="time-cell">{t('records.period')}</th>
-                <th className="action-cell">{t('records.action')}</th>
-                <th className="numeric duration-cell">{t('records.duration')}</th>
-                <th className="actions-cell">{t('common.operation')}</th>
-              </tr>
-            </thead>
-            <tbody>{records.map(renderRecordRow)}</tbody>
-          </table>
+      <div className="records-scroll">
+        {loading ? (
+          <p className="empty">{t('records.loading')}</p>
+        ) : isFuture ? (
+          <p className="empty">{t('records.futureEmpty')}</p>
+        ) : records.length === 0 ? (
+          <p className="empty">{t('records.empty')}</p>
+        ) : (
+          <>
+            <table className="time-table record-table">
+              <thead>
+                <tr>
+                  <th className="time-cell">{t('records.period')}</th>
+                  <th className="action-cell">{t('records.action')}</th>
+                  <th className="numeric duration-cell">{t('records.duration')}</th>
+                  <th className="actions-cell">{t('common.operation')}</th>
+                </tr>
+              </thead>
+              <tbody>{records.map(renderRecordRow)}</tbody>
+            </table>
 
-          <div className="slot-chips records-gaps">
-            <span className="hint">{t('records.gaps')}</span>
-            {gaps.length === 0 ? (
-              <span className="hint">{t('records.fullDay')}</span>
-            ) : (
-              gaps.map(renderGapChip)
-            )}
-          </div>
-        </>
-      )}
+            <div className="slot-chips records-gaps">
+              <span className="hint">{t('records.gaps')}</span>
+              {gaps.length === 0 ? (
+                <span className="hint">{t('records.fullDay')}</span>
+              ) : (
+                gaps.map(renderGapChip)
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </section>
   )
 }
