@@ -64,7 +64,7 @@ export function RecordList(props: RecordListProps) {
   }
 
   return (
-    <section className="panel panel-grow">
+    <section className="panel panel-grow records-panel">
       <div className="panel-head">
         <h2>{t('records.title')}</h2>
         <span className="badge">

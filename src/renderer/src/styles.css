@@ -201,7 +201,10 @@ textarea {
   min-height: 0;
   max-width: none;
   width: auto;
-  overflow: hidden;
+  /* 常规高度下由记录区内部滚动；极端缩放下统计与记录都到最小高度后，
+     右栏自己兜底滚动，保证内容不被 overflow:hidden 裁掉 */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .column-scroll {
@@ -639,7 +642,11 @@ button:disabled {
 
 /* 统计：紧凑的汇总条 + 双列条形，范围可调 */
 .stats-panel {
-  flex: 0 0 auto;
+  /* 高度不足时统计先收缩并内部滚动，把余量留给记录区，避免记录被压到零高 */
+  flex: 0 1 auto;
+  min-height: 96px;
+  max-height: 40%;
+  overflow-y: auto;
 }
 
 .stats-range {
@@ -937,6 +944,11 @@ html[data-slot-tint='on'] .time-table tbody tr[data-slot='late-night'] td.time-c
 }
 
 /* 记录表在自己的区域内滚动，时钟与统计保持固定，左栏不被整页滚动带走 */
+.records-panel {
+  /* 无论怎么放大，记录区都保留一屏可用的最小高度，滚动发生在内部 */
+  min-height: 180px;
+}
+
 .records-scroll {
   flex: 1;
   min-height: 0;
