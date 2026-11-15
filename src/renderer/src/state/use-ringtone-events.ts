@@ -3,6 +3,7 @@ import type { ActionDto, EventPayload, TimerSnapshotDto } from '@shared/contract
 import { subscribeEvent } from '../api'
 import {
   playRingtone,
+  stopRingtone,
   type CustomRingtoneFile,
 } from '../features/ringtones/play-ringtone'
 import { resolveRingtone, type RingtoneValue } from './ringtone-types'
@@ -14,26 +15,19 @@ export type RingtoneSettings = {
   readonly custom: readonly CustomRingtoneFile[]
 }
 
-export type RingtoneEvents = {
-  // 计划提醒已经响过铃，随后从提醒卡片启动计时时不要重复播放开始铃声
-  suppressNextStart(): void
-  cancelStartSuppression(): void
-}
-
-// 计时开始播开始铃声，倒计时自然到点播结束铃声；手动结束不提示
+// 铃声只服务提醒场景：计时开始保持静音，倒计时自然到点播结束铃声；手动结束不提示
 export function useRingtoneEvents(
   snapshot: TimerSnapshotDto,
   actions: readonly ActionDto[],
   settings: RingtoneSettings,
-): RingtoneEvents {
-  const suppressedRef = useRef(false)
+): void {
   const previousRef = useRef<{ status: TimerSnapshotDto['status']; actionId: number | null }>({
     status: snapshot.status,
     actionId: snapshot.actionId,
   })
 
   useEffect(
-    function playStartOnTransition() {
+    function stopPreviousOnStart() {
       const previous = previousRef.current
       previousRef.current = { status: snapshot.status, actionId: snapshot.actionId }
 
@@ -43,13 +37,11 @@ export function useRingtoneEvents(
       if (previous.status === 'running' && previous.actionId === snapshot.actionId) {
         return
       }
-      if (suppressedRef.current) {
-        suppressedRef.current = false
-        return
-      }
-      playForAction(actions, snapshot.actionId, 'start', settings)
+      // 手动开始或提醒后自动开始都保持静音，只收掉上一段一次性铃声，
+      // 避免倒计时结束的铃声继续播到文件末尾
+      stopRingtone()
     },
-    [snapshot.status, snapshot.actionId, actions, settings],
+    [snapshot.status, snapshot.actionId],
   )
 
   useEffect(
@@ -58,39 +50,25 @@ export function useRingtoneEvents(
         if (payload.reason !== 'completed') {
           return
         }
-        playForAction(actions, payload.actionId, 'end', settings)
+        playEndForAction(actions, payload.actionId, settings)
       }
       return subscribeEvent('timer.finished', handleFinished)
     },
     [actions, settings],
   )
-
-  function suppressNextStart(): void {
-    suppressedRef.current = true
-  }
-
-  function cancelStartSuppression(): void {
-    suppressedRef.current = false
-  }
-
-  return { suppressNextStart, cancelStartSuppression }
 }
 
-function playForAction(
+function playEndForAction(
   actions: readonly ActionDto[],
   actionId: number,
-  kind: 'start' | 'end',
   settings: RingtoneSettings,
 ): void {
   if (!settings.soundEnabled) {
     return
   }
   const action = actions.find((item) => item.id === actionId)
-  const value = action === undefined ? null : kind === 'start' ? action.startRingtone : action.endRingtone
-  const ringtoneId = resolveRingtone(
-    value,
-    kind === 'start' ? settings.defaultStart : settings.defaultEnd,
-  )
+  const value = action === undefined ? null : action.endRingtone
+  const ringtoneId = resolveRingtone(value, settings.defaultEnd)
   if (ringtoneId !== null) {
     playRingtone(ringtoneId, settings.custom)
   }

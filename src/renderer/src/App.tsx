@@ -87,7 +87,7 @@ export function App() {
       settingsState.snapshot?.settings.soundEnabled,
     ],
   )
-  const ringtoneEvents = useRingtoneEvents(
+  useRingtoneEvents(
     controller.snapshot,
     actionsState.actions,
     ringtoneSettings,
@@ -214,6 +214,12 @@ export function App() {
     )
   }
 
+  function handleDismissFinished(): void {
+    // 关闭横幅即停止倒计时结束铃声，不等音频文件自然播完
+    stopRingtone()
+    finishedState.clear()
+  }
+
   function handleRestartFinished(finished: FinishedTimer): void {
     const action = actionsState.actions.find((item) => item.id === finished.actionId)
     void controller.start(finished.actionId, action?.timerTargetSec ?? null).then((error) => {
@@ -224,11 +230,9 @@ export function App() {
   }
 
   async function handleAlarmStart(alarm: AlarmFireDto): Promise<void> {
-    // 提醒本身已经响过开始铃声，这里从卡片启动计时时不重复播放
-    ringtoneEvents.suppressNextStart()
+    // 提醒已经响过提醒铃声，从卡片启动计时时保持静音
     const error = await controller.start(alarm.actionId, alarm.targetSec)
     if (error !== null) {
-      ringtoneEvents.cancelStartSuppression()
       return
     }
     alarmsState.dismiss(alarm)
@@ -288,7 +292,7 @@ export function App() {
       <TimerFinishedBanner
         finished={finishedState.finished}
         onRestart={handleRestartFinished}
-        onDismiss={finishedState.clear}
+        onDismiss={handleDismissFinished}
       />
 
       <main className="app-main">
